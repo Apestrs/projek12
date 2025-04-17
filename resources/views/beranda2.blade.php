@@ -37,6 +37,15 @@
         .social-icon:hover {
             transform: translateY(-3px);
         }
+        /* Mobile menu styles */
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .mobile-menu.open {
+            max-height: 500px;
+        }
     </style>
 </head>
 <body class="font-sans">
@@ -44,77 +53,169 @@
 
 <!-- Navbar Beranda2 (Unified with Consistent Menu Position) -->
 <header class="fixed top-0 left-0 w-full bg-white shadow-lg z-50">
-  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between relative">
-    <!-- Bagian Kiri: Logo -->
-    <div class="flex items-center">
-      <a href="/" class="flex items-center">
-        <img src="<?php echo $logo; ?>" alt="Semesta Pusat Kreasi" class="h-12">
-      </a>
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between relative">
+        <!-- Bagian Kiri: Logo -->
+        <div class="flex items-center">
+            <a href="/" class="flex items-center">
+                <img src="<?php echo $logo; ?>" alt="Semesta Pusat Kreasi" class="h-12">
+            </a>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <div class="md:hidden flex items-center">
+            <button id="mobile-menu-button" class="text-gray-800 focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Bagian Tengah: Menu Navigasi Desktop -->
+        <nav class="hidden md:flex space-x-6 text-gray-800 font-medium absolute left-1/2 transform -translate-x-1/2">
+            <a href="/" class="pb-1 border-b-2 border-transparent hover:text-blue-600 transition-colors duration-300">Beranda</a>
+            <a href="/tentangkami" class="pb-1 border-b-2 border-transparent hover:text-blue-600 transition-colors duration-300">Tentang Kami</a>
+            <div class="relative">
+                <?php if(auth()->check()): ?>
+                    <button class="dropdown-button pb-1 border-b-2 border-transparent hover:text-blue-600 focus:outline-none transition-colors duration-300">
+                        Portofolio ▾
+                    </button>
+                    <div class="dropdown-menu absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg hidden">
+                        <a href="/project" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors duration-300">
+                            Project Perusahaan
+                        </a>
+                        <a href="/layanan" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors duration-300">
+                            Layanan Perusahaan
+                        </a>
+                    </div>
+                <?php else: ?>
+                    <a href="/portofolio" class="pb-1 border-b-2 border-transparent hover:text-blue-600 transition-colors duration-300">Portofolio</a>
+                <?php endif; ?>
+            </div>
+            <a href="/hubungikami" class="pb-1 border-b-2 border-transparent hover:text-blue-600 transition-colors duration-300">Hubungi Kami</a>
+        </nav>
+        
+        <!-- Bagian Kanan: Tombol Logout -->
+        <div class="hidden md:flex items-center space-x-4">
+            <?php if(auth()->check()): ?>
+                <form id="logout-form" action="<?php echo route('logout'); ?>" method="POST" style="display: none;">
+                    <?php echo csrf_field(); ?>
+                </form>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+                   class="text-red-600 font-semibold hover:text-red-700 transition-colors duration-300">
+                    Logout
+                </a>
+            <?php endif; ?>
+        </div>
     </div>
     
-    <!-- Bagian Tengah: Menu Navigasi -->
-    <nav class="hidden md:flex space-x-6 text-gray-800 font-medium absolute left-1/2 transform -translate-x-1/2">
-      <!-- Setiap link diberi kelas dasar agar memiliki border-bottom yang sama -->
-      <a href="/" class="pb-1 border-b-2 border-transparent hover:text-blue-600 transition-colors duration-300">Beranda</a>
-      <a href="/tentangkami" class="pb-1 border-b-2 border-transparent hover:text-blue-600 transition-colors duration-300">Tentang Kami</a>
-      <div class="relative">
-        <?php if(auth()->check()): ?>
-          <button class="dropdown-button pb-1 border-b-2 border-transparent hover:text-blue-600 focus:outline-none transition-colors duration-300">
-            Portofolio ▾
-          </button>
-          <div class="dropdown-menu absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg hidden">
-            <a href="/project" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors duration-300">
-              Project Perusahaan
-            </a>
-            <a href="/layanan" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors duration-300">
-              Layanan Perusahaan
-            </a>
-          </div>
-        <?php else: ?>
-          <a href="/portofolio" class="pb-1 border-b-2 border-transparent hover:text-blue-600 transition-colors duration-300">Portofolio</a>
-        <?php endif; ?>
-      </div>
-      <a href="/hubungikami" class="pb-1 border-b-2 border-transparent hover:text-blue-600 transition-colors duration-300">Hubungi Kami</a>
-    </nav>
-    
-    <!-- Bagian Kanan: Tombol Logout -->
-    <div class="flex items-center space-x-4">
-      <?php if(auth()->check()): ?>
-        <form id="logout-form" action="<?php echo route('logout'); ?>" method="POST" style="display: none;">
-          <?php echo csrf_field(); ?>
-        </form>
-        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
-           class="text-red-600 font-semibold hover:text-red-700 transition-colors duration-300">
-          Logout
-        </a>
-      <?php endif; ?>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu md:hidden bg-white w-full px-6">
+        <div class="flex flex-col space-y-4 py-4">
+            <a href="/" class="text-gray-800 hover:text-blue-600 py-2 border-b border-gray-100">Beranda</a>
+            <a href="/tentangkami" class="text-gray-800 hover:text-blue-600 py-2 border-b border-gray-100">Tentang Kami</a>
+            
+            <?php if(auth()->check()): ?>
+                <div class="relative">
+                    <button id="mobile-dropdown-button" class="w-full text-left text-gray-800 hover:text-blue-600 py-2 border-b border-gray-100 flex justify-between items-center">
+                        Portofolio <i class="fas fa-chevron-down ml-2 text-sm"></i>
+                    </button>
+                    <div id="mobile-dropdown-menu" class="hidden pl-4 mt-2 space-y-2">
+                        <a href="/project" class="block text-gray-700 hover:text-blue-600 py-1">Project Perusahaan</a>
+                        <a href="/layanan" class="block text-gray-700 hover:text-blue-600 py-1">Layanan Perusahaan</a>
+                    </div>
+                </div>
+            <?php else: ?>
+                <a href="/portofolio" class="text-gray-800 hover:text-blue-600 py-2 border-b border-gray-100">Portofolio</a>
+            <?php endif; ?>
+            
+            <a href="/hubungikami" class="text-gray-800 hover:text-blue-600 py-2 border-b border-gray-100">Hubungi Kami</a>
+            
+            <?php if(auth()->check()): ?>
+                <form id="mobile-logout-form" action="<?php echo route('logout'); ?>" method="POST" style="display: none;">
+                    <?php echo csrf_field(); ?>
+                </form>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('mobile-logout-form').submit();" 
+                   class="text-red-600 font-semibold hover:text-red-700 py-2 border-b border-gray-100">
+                    Logout
+                </a>
+            <?php endif; ?>
+        </div>
     </div>
-  </div>
 </header>
 
 <script>
-  // Toggle dropdown on click for Portofolio menu
-  document.addEventListener('DOMContentLoaded', function(){
-    const dropdownButton = document.querySelector('.dropdown-button');
-    if(dropdownButton) {
-      dropdownButton.addEventListener('click', function(e){
-        e.stopPropagation();
-        const dropdownMenu = this.nextElementSibling;
-        dropdownMenu.classList.toggle('hidden');
-      });
-      
-      // Hide dropdown when clicking outside
-      document.addEventListener('click', function(e) {
-        const dropdownMenu = document.querySelector('.dropdown-menu');
-        if(dropdownMenu && !dropdownMenu.contains(e.target)) {
-          dropdownMenu.classList.add('hidden');
+    // Toggle mobile menu
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('open');
+            
+            // Toggle icon between bars and times
+            const icon = this.querySelector('i');
+            if (mobileMenu.classList.contains('open')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Toggle mobile dropdown menu
+        const mobileDropdownButton = document.getElementById('mobile-dropdown-button');
+        if (mobileDropdownButton) {
+            mobileDropdownButton.addEventListener('click', function() {
+                const dropdownMenu = document.getElementById('mobile-dropdown-menu');
+                dropdownMenu.classList.toggle('hidden');
+                
+                // Rotate chevron icon
+                const chevron = this.querySelector('i');
+                chevron.classList.toggle('fa-chevron-down');
+                chevron.classList.toggle('fa-chevron-up');
+            });
         }
-      });
-    }
-  });
+        
+        // Close mobile menu when clicking on a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (!this.classList.contains('dropdown-button')) {
+                    mobileMenu.classList.remove('open');
+                    mobileMenuButton.querySelector('i').classList.remove('fa-times');
+                    mobileMenuButton.querySelector('i').classList.add('fa-bars');
+                }
+            });
+        });
+        
+        // Toggle desktop dropdown on click for Portofolio menu
+        const dropdownButton = document.querySelector('.dropdown-button');
+        if(dropdownButton) {
+            dropdownButton.addEventListener('click', function(e){
+                e.stopPropagation();
+                const dropdownMenu = this.nextElementSibling;
+                dropdownMenu.classList.toggle('hidden');
+            });
+            
+            // Hide dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                const dropdownMenu = document.querySelector('.dropdown-menu');
+                if(dropdownMenu && !dropdownMenu.contains(e.target) && !dropdownButton.contains(e.target)) {
+                    dropdownMenu.classList.add('hidden');
+                }
+            });
+        }
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
 </script>
-
-
 
 <!-- Hero Section -->
 <section class="relative w-full min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-700 to-purple-700 text-white pt-20">
@@ -328,17 +429,5 @@
         <p>&copy; <?php echo date('Y'); ?> Semesta Pusat Kreasi. Seluruh hak dilindungi.</p>
     </div>
 </footer>
-
-<script>
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-</script>
 </body>
 </html>
