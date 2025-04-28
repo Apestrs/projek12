@@ -42,23 +42,21 @@
             </a>
         </nav>
         
-        <!-- Kanan: Logout & Mobile Menu -->
-        <div class="flex items-center space-x-4">
-            @if(auth()->check())
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                    @csrf
+       <!-- Bagian Kanan: Tombol Logout/Mobile Menu -->
+       <div class="flex items-center space-x-4">
+            <?php if(auth()->check()): ?>
+                <form id="logout-form" action="<?php echo route('logout'); ?>" method="POST" style="display: none;">
+                    <?php echo csrf_field(); ?>
                 </form>
-                <button type="submit" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
-                   class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-all duration-300 flex items-center">
-                   <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                </button>
-            @endif
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+                   class="hidden md:block text-red-600 font-semibold hover:text-red-700 transition-colors duration-300">
+                    Logout
+                </a>
+            <?php endif; ?>
             
-            <!-- Mobile menu button -->
-            <button class="md:hidden focus:outline-none text-gray-800" id="mobile-menu-button">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
+            <!-- Tombol Hamburger untuk Mobile -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
             </button>
         </div>
     </div>

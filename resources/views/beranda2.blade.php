@@ -219,9 +219,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex flex-col lg:flex-row items-center gap-8 md:gap-12">
             <div class="lg:w-1/2">
-                <img src="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" 
-                     alt="Tentang Perusahaan" 
-                     class="rounded-xl shadow-2xl w-full">
+            <img src="images/foto5.jpg" alt="Digital Partner Award 2023" class="w-full h-auto">
             </div>
             <div class="lg:w-1/2 mt-6 md:mt-0">
                 <h2 class="text-2xl md:text-4xl font-bold text-gray-800 mb-4 md:mb-6">Tentang Semesta Pusat Kreasi</h2>

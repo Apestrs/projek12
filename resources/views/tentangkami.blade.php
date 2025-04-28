@@ -65,20 +65,21 @@
             <a href="/hubungikami" class="hover:text-blue-600 transition-colors duration-300">Hubungi Kami</a>
         </nav>
         
-        <!-- Mobile Menu Button & Logout -->
-        <div class="flex items-center space-x-4">
+       <!-- Bagian Kanan: Tombol Logout/Mobile Menu -->
+       <div class="flex items-center space-x-4">
             <?php if(auth()->check()): ?>
-                <form id="logout-form" action="<?php echo route('logout'); ?>" method="POST" class="hidden">
+                <form id="logout-form" action="<?php echo route('logout'); ?>" method="POST" style="display: none;">
                     <?php echo csrf_field(); ?>
                 </form>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
-                   class="hidden md:block text-red-600 font-medium hover:text-red-800 transition-colors duration-300">
-                   <i class="fas fa-sign-out-alt mr-1"></i> Keluar
+                   class="hidden md:block text-red-600 font-semibold hover:text-red-700 transition-colors duration-300">
+                    Logout
                 </a>
             <?php endif; ?>
             
-            <button id="mobile-menu-button" class="md:hidden text-gray-800 focus:outline-none">
-                <i class="fas fa-bars text-xl"></i>
+            <!-- Tombol Hamburger untuk Mobile -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
             </button>
         </div>
     </div>
