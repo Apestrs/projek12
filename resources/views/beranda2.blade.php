@@ -219,7 +219,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex flex-col lg:flex-row items-center gap-8 md:gap-12">
             <div class="lg:w-1/2">
-            <img src="images/foto5.jpg" alt="Digital Partner Award 2023" class="w-full h-auto">
+            <img src="images/gambar13.jpg" alt="Digital Partner Award 2023" class="w-full h-auto">
             </div>
             <div class="lg:w-1/2 mt-6 md:mt-0">
                 <h2 class="text-2xl md:text-4xl font-bold text-gray-800 mb-4 md:mb-6">Tentang Semesta Pusat Kreasi</h2>
